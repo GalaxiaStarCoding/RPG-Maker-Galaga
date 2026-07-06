@@ -1,0 +1,72 @@
+{
+  "projectName": "Sample Project",
+  "engineVersion": "0.1.0",
+  "maps": [
+    {
+      "id": "map001",
+      "name": "Town Square",
+      "width": 6,
+      "height": 4,
+      "tiles": [
+        ["grass", "grass", "grass", "path", "grass", "grass"],
+        ["grass", "tree", "grass", "path", "grass", "tree"],
+        ["grass", "grass", "path", "path", "path", "grass"],
+        ["grass", "grass", "grass", "grass", "grass", "grass"]
+      ],
+      "events": [
+        {
+          "id": "evt001",
+          "name": "Old Man NPC",
+          "x": 2,
+          "y": 1,
+          "trigger": "action",
+          "commands": [
+            "Show Text: Welcome to our town, traveler!",
+            "Give Item: Potion x1"
+          ]
+        },
+        {
+          "id": "evt002",
+          "name": "Town Sign",
+          "x": 3,
+          "y": 0,
+          "trigger": "action",
+          "commands": [
+            "Show Text: You are entering Town Square."
+          ]
+        }
+      ]
+    }
+  ],
+  "database": {
+    "actors": [
+      { "id": "act001", "name": "Hero", "classId": "cls001", "initialLevel": 1, "maxHp": 100, "maxMp": 20 }
+    ],
+    "classes": [
+      { "id": "cls001", "name": "Warrior", "hpGrowth": "high", "mpGrowth": "low" }
+    ],
+    "items": [
+      { "id": "itm001", "name": "Potion", "description": "Restores 50 HP.", "price": 50 }
+    ],
+    "skills": [
+      { "id": "skl001", "name": "Slash", "mpCost": 3, "power": 20 }
+    ],
+    "enemies": [
+      { "id": "enm001", "name": "Slime", "hp": 30, "attack": 5 }
+    ],
+    "troops": []
+  },
+  "customMenus": [
+    {
+      "id": "menu001",
+      "name": "Main Menu",
+      "createdBy": "ai-assistant",
+      "layout": [
+        { "type": "command", "label": "Items" },
+        { "type": "command", "label": "Skills" },
+        { "type": "command", "label": "Equip" },
+        { "type": "command", "label": "Status" }
+      ]
+    }
+  ]
+}

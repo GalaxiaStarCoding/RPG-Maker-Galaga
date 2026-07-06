@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>RPG Maker Galaga</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Skip link for keyboard/screen reader users to jump straight past the tab list -->
+  <a class="skip-link" href="#main-panel">Skip to main content</a>
+
+  <header>
+    <h1>RPG Maker Galaga</h1>
+    <p class="subtitle">Accessible RPG creation, built for NVDA</p>
+  </header>
+
+  <!-- Live region: all status/AI messages get announced here automatically -->
+  <div id="live-status" aria-live="polite" class="visually-hidden"></div>
+  <div id="live-alert" aria-live="assertive" class="visually-hidden"></div>
+
+  <div class="app-body">
+
+    <!-- Standard ARIA tabs pattern: fully keyboard operable (arrow keys move,
+         Enter/Space activates), each panel labeled by its tab -->
+    <div role="tablist" aria-label="Editor sections" class="tab-list">
+      <button role="tab" id="tab-map" aria-selected="true" aria-controls="panel-map" class="tab-button">Map Editor</button>
+      <button role="tab" id="tab-events" aria-selected="false" aria-controls="panel-events" class="tab-button" tabindex="-1">Event Editor</button>
+      <button role="tab" id="tab-database" aria-selected="false" aria-controls="panel-database" class="tab-button" tabindex="-1">Database</button>
+      <button role="tab" id="tab-ai" aria-selected="false" aria-controls="panel-ai" class="tab-button" tabindex="-1">AI Assistant</button>
+    </div>
+
+    <main id="main-panel">
+
+      <!-- MAP EDITOR: list/tree based, NOT a canvas. Each tile is a real,
+           focusable, labeled button so NVDA reads position + content. -->
+      <section role="tabpanel" id="panel-map" aria-labelledby="tab-map" tabindex="0">
+        <h2>Map Editor</h2>
+        <p>Current map: <span id="map-name">Untitled Map</span> (<span id="map-size">0 x 0</span>)</p>
+
+        <div class="toolbar">
+          <button id="btn-announce-map">Announce Map Summary</button>
+          <button id="btn-add-row">Add Row</button>
+          <button id="btn-add-col">Add Column</button>
+        </div>
+
+        <div id="map-grid" class="map-grid" role="grid" aria-label="Map tile grid">
+          <!-- rows/cells injected by renderer.js as role="row" / role="gridcell" buttons -->
+        </div>
+
+        <h3>Events on this map</h3>
+        <ul id="map-event-list" class="event-list" aria-label="Events on the current map">
+          <!-- populated by renderer.js -->
+        </ul>
+      </section>
+
+      <!-- EVENT EDITOR: real form controls, not a drag-drop command list -->
+      <section role="tabpanel" id="panel-events" aria-labelledby="tab-events" tabindex="0" hidden>
+        <h2>Event Editor</h2>
+
+        <label for="event-select">Select an event to edit</label>
+        <select id="event-select"></select>
+
+        <form id="event-form">
+          <div class="field">
+            <label for="event-name">Event name</label>
+            <input type="text" id="event-name" name="event-name" />
+          </div>
+
+          <div class="field">
+            <label for="event-trigger">Trigger type</label>
+            <select id="event-trigger">
+              <option value="action">Action button</option>
+              <option value="touch">Player touch</option>
+              <option value="autorun">Autorun</option>
+              <option value="parallel">Parallel process</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="event-commands">Commands (one per line)</label>
+            <textarea id="event-commands" rows="8" aria-describedby="event-commands-help"></textarea>
+            <p id="event-commands-help" class="help-text">
+              Example: Show Text: Hello! | Give Item: Potion x1 | Change Switch: SwitchA = ON
+            </p>
+          </div>
+
+          <button type="submit">Save Event</button>
+        </form>
+      </section>
+
+      <!-- DATABASE: actors, classes, items, skills, enemies -->
+      <section role="tabpanel" id="panel-database" aria-labelledby="tab-database" tabindex="0" hidden>
+        <h2>Database</h2>
+
+        <label for="database-category">Category</label>
+        <select id="database-category">
+          <option value="actors">Actors</option>
+          <option value="classes">Classes</option>
+          <option value="items">Items</option>
+          <option value="skills">Skills</option>
+          <option value="enemies">Enemies</option>
+        </select>
+
+        <div class="database-columns">
+          <div>
+            <label for="database-entry-list">Entries</label>
+            <select id="database-entry-list" size="10"></select>
+            <button id="btn-add-entry">Add New Entry</button>
+          </div>
+
+          <div id="database-detail" aria-live="polite">
+            <!-- renderer.js fills this in with a real <form> per selected entry -->
+          </div>
+        </div>
+      </section>
+
+      <!-- AI ASSISTANT -->
+      <section role="tabpanel" id="panel-ai" aria-labelledby="tab-ai" tabindex="0" hidden>
+        <h2>AI Assistant</h2>
+        <p class="help-text">
+          Describe what you want in plain language, for example:
+          "Create a main menu with Items, Skills, Equip, and Status" or
+          "Add an NPC on this map that gives the player a potion."
+        </p>
+
+        <label for="ai-input">Ask the assistant</label>
+        <textarea id="ai-input" rows="3"></textarea>
+        <button id="ai-send">Send</button>
+
+        <h3>Conversation</h3>
+        <div id="ai-log" class="ai-log" aria-live="polite" tabindex="0">
+          <!-- messages appended here -->
+        </div>
+
+        <h3>Pending Action</h3>
+        <div id="ai-pending-action">
+          <p>No pending action.</p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>
